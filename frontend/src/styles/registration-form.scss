@@ -1,0 +1,44 @@
+@use "./variables" as *;
+
+/* ===== Bloco principal ===== */
+.registration-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: $spacing-xxl;
+  font-family: $font-main;
+}
+
+.registration-form__card {
+  width: 100%;
+  max-width: 350px;
+  background: $color-white;
+  border-radius: 12px;
+  padding: $spacing-lg $spacing-md;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ===== Elementos ===== */
+.registration-form__step-indicator {
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-md;
+  text-align: left;
+}
+
+/* ===== Modificadores ===== */
+.registration-form__step-indicator--highlight {
+  color: $color-primary;
+  font-weight: bold;
+}
+
+/* ===== Título ===== */
+.registration-form__title,
+h1 {
+  font-size: $font-size-lg;
+  font-weight: bold;
+  margin-bottom: $spacing-lg;
+  text-align: left;
+}

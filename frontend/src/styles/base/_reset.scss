@@ -1,0 +1,33 @@
+@use "../_variables" as *;
+
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: inherit;
+  background: $color-white;
+  color: $color-black;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}

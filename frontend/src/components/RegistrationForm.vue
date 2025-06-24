@@ -9,10 +9,12 @@
         de 4
       </div>
       <h1>{{ formStore.stepFirst.title }}</h1>
+      <StepFirst v-if="formStore.currentStep === 1" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { formStore } from "../store/formStore.js";
+import StepFirst from "./StepFirst.vue";
 </script>

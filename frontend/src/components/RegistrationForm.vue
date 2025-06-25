@@ -11,6 +11,7 @@
       <h1 class="registration-form__title">{{ formStore.currentTitle }}</h1>
       <StepFirst v-if="formStore.currentStep === 1" />
       <StepSecond v-if="formStore.currentStep === 2" />
+      <StepThird v-if="formStore.currentStep === 3" />
     </div>
   </div>
 </template>
@@ -19,4 +20,5 @@
 import { formStore } from "../store/formStore.js";
 import StepFirst from "./StepFirst.vue";
 import StepSecond from "./StepSecond.vue";
+import StepThird from "./StepThird.vue";
 </script>

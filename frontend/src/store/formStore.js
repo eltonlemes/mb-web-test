@@ -22,4 +22,8 @@ export const formStore = reactive({
     dataAbertura: "",
     telefonePJ: "",
   },
+  stepThird: {
+    id: 3,
+    senha: "",
+  },
 });

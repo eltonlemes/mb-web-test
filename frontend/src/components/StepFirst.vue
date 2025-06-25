@@ -13,7 +13,7 @@
     </div>
 
     <!-- Tipo de cadastro -->
-    <div class="form__group">
+    <div class="form__group" v-if="showTipoCadastro">
       <div class="form__radio-group">
         <label>
           <input type="radio" value="PF" v-model="formStore.stepFirst.tipoCadastro" />
@@ -25,21 +25,16 @@
         </label>
       </div>
     </div>
-
-    <!-- Botão Continuar -->
-    <div class="form__actions">
-      <button class="btn btn--primary" @click="nextStep" :disabled="!canContinue">Continuar</button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { formStore } from "../store/formStore.js";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { isValidEmail } from "../helpers.js";
 
-onMounted(() => {
-  formStore.currentTitle = formStore.stepFirst.title;
+const props = defineProps({
+  showTipoCadastro: { type: Boolean, default: true },
 });
 
 const emailClass = computed(() => {
@@ -48,14 +43,4 @@ const emailClass = computed(() => {
   if (!isValidEmail(email)) return "error";
   return "success";
 });
-
-const canContinue = computed(() => {
-  return isValidEmail(formStore.stepFirst.email) && formStore.stepFirst.tipoCadastro !== "";
-});
-
-function nextStep() {
-  if (canContinue.value) {
-    formStore.currentStep++;
-  }
-}
 </script>

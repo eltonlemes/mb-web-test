@@ -16,20 +16,12 @@
         </button>
       </div>
     </div>
-    <div class="form__actions" style="display: flex; gap: 1rem">
-      <button class="btn btn--secondary" @click="prevStep">Voltar</button>
-      <button class="btn btn--primary" @click="nextStep" :disabled="!canContinue">Continuar</button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { formStore } from "../store/formStore.js";
-import { computed, onMounted, ref } from "vue";
-
-onMounted(() => {
-  formStore.currentTitle = "Senha de acesso";
-});
+import { computed, ref } from "vue";
 
 const showPassword = ref(false);
 function togglePassword() {
@@ -41,15 +33,4 @@ const senhaClass = computed(() => {
   if (senha === "") return "default";
   return senha.length >= 6 ? "success" : "error";
 });
-
-const canContinue = computed(() => formStore.stepThird.senha.length >= 6);
-
-function prevStep() {
-  formStore.currentStep--;
-}
-function nextStep() {
-  if (canContinue.value) {
-    formStore.currentStep++;
-  }
-}
 </script>

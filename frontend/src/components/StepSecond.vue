@@ -79,27 +79,13 @@
         />
       </div>
     </template>
-
-    <!-- Botões de navegação -->
-    <div class="form__actions" style="display: flex; gap: 1rem">
-      <button class="btn btn--secondary" @click="prevStep">Voltar</button>
-      <button class="btn btn--primary" @click="nextStep" :disabled="!canContinue">Continuar</button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { formStore } from "../store/formStore.js";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { isValidNome, isValidCPF, isValidCNPJ, isValidTelefone, isValidDate } from "../helpers.js";
-
-const titulo = computed(() =>
-  formStore.stepFirst.tipoCadastro === "PJ" ? "Pessoa Jurídica" : "Pessoa Física"
-);
-
-onMounted(() => {
-  formStore.currentTitle = titulo.value;
-});
 
 const nomeClass = computed(() => {
   if (!formStore.stepSecond.nome) return "default";
@@ -133,31 +119,4 @@ const telefonePJClass = computed(() => {
   if (!formStore.stepSecond.telefonePJ) return "default";
   return isValidTelefone(formStore.stepSecond.telefonePJ) ? "success" : "error";
 });
-
-const canContinue = computed(() => {
-  if (formStore.stepFirst.tipoCadastro === "PF") {
-    return (
-      isValidNome(formStore.stepSecond.nome) &&
-      isValidCPF(formStore.stepSecond.cpf) &&
-      isValidDate(formStore.stepSecond.dataNascimento) &&
-      isValidTelefone(formStore.stepSecond.telefone)
-    );
-  } else {
-    return (
-      isValidNome(formStore.stepSecond.razaoSocial) &&
-      isValidCNPJ(formStore.stepSecond.cnpj) &&
-      isValidDate(formStore.stepSecond.dataAbertura) &&
-      isValidTelefone(formStore.stepSecond.telefonePJ)
-    );
-  }
-});
-
-function prevStep() {
-  formStore.currentStep--;
-}
-function nextStep() {
-  if (canContinue.value) {
-    formStore.currentStep++;
-  }
-}
 </script>

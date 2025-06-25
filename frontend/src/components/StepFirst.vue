@@ -7,7 +7,7 @@
         id="email"
         type="email"
         v-model="formStore.stepFirst.email"
-        class="form__field"
+        :class="`form__field form__field--${emailClass}`"
         placeholder="Digite seu e-mail"
       />
     </div>
@@ -25,9 +25,33 @@
         </label>
       </div>
     </div>
+
+    <!-- Botão Continuar -->
+    <div class="form__actions">
+      <button class="btn btn--primary" @click="nextStep" :disabled="!canContinue">Continuar</button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { formStore } from "../store/formStore.js";
+import { computed } from "vue";
+import { isValidEmail } from "../helpers.js";
+
+const emailClass = computed(() => {
+  const email = formStore.stepFirst.email;
+  if (email === "") return "default";
+  if (!isValidEmail(email)) return "error";
+  return "success";
+});
+
+const canContinue = computed(() => {
+  return isValidEmail(formStore.stepFirst.email) && formStore.stepFirst.tipoCadastro !== "";
+});
+
+function nextStep() {
+  if (canContinue.value) {
+    formStore.currentStep++;
+  }
+}
 </script>

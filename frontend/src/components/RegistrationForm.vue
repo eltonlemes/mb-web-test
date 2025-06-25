@@ -8,7 +8,7 @@
         }}</span>
         de 4
       </div>
-      <h1>{{ formStore.stepFirst.title }}</h1>
+      <h1 class="registration-form__title">{{ formStore.stepFirst.title }}</h1>
       <StepFirst v-if="formStore.currentStep === 1" />
     </div>
   </div>

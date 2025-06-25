@@ -1,44 +1,74 @@
 @use "../_variables" as *;
 
-/* ===== Bloco principal ===== */
-.registration-form {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  margin-top: $spacing-xxl;
-  font-family: $font-main;
+.form__actions {
+  margin-top: $spacing-md;
 }
 
-.registration-form__card {
+.form__field {
   width: 100%;
-  max-width: 350px;
-  background: $color-white;
-  border-radius: 12px;
-  padding: $spacing-lg $spacing-md;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 2px solid $color-black;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  outline: none;
+  &--error {
+    border-color: #e53935;
+  }
+  &--success {
+    border-color: $color-primary;
+  }
+  &--default {
+    border-color: $color-black;
+  }
+}
+
+.form__group {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-}
-
-/* ===== Elementos ===== */
-.registration-form__step-indicator {
-  font-size: $font-size-sm;
+  gap: 0.5rem;
   margin-bottom: $spacing-md;
-  text-align: left;
 }
 
-/* ===== Modificadores ===== */
-.registration-form__step-indicator--highlight {
-  color: $color-primary;
-  font-weight: bold;
+.form__radio-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
 }
 
-/* ===== Título ===== */
-.registration-form__title,
-h1 {
-  font-size: $font-size-lg;
-  font-weight: bold;
-  margin-bottom: $spacing-lg;
-  text-align: left;
+.form__radio-group input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  margin: 0 0.5rem 0 0;
+  font: inherit;
+  width: 18px;
+  height: 18px;
+  border: 2px solid $color-black;
+  border-radius: 50%;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  outline: none;
+  box-shadow: none;
+}
+
+.form__radio-group input[type="radio"]:checked {
+  border-color: $color-primary;
+}
+
+.form__radio-group input[type="radio"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: $color-primary;
+  transform: scale(0);
+  transition: transform 0.2s;
+  display: block;
+}
+
+.form__radio-group input[type="radio"]:checked::before {
+  transform: scale(1);
 }

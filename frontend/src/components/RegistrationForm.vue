@@ -12,6 +12,7 @@
       <StepFirst v-if="formStore.currentStep === 1" />
       <StepSecond v-if="formStore.currentStep === 2" />
       <StepThird v-if="formStore.currentStep === 3" />
+      <StepFourth v-if="formStore.currentStep === 4" />
     </div>
   </div>
 </template>
@@ -21,4 +22,5 @@ import { formStore } from "../store/formStore.js";
 import StepFirst from "./StepFirst.vue";
 import StepSecond from "./StepSecond.vue";
 import StepThird from "./StepThird.vue";
+import StepFourth from "./StepFourth.vue";
 </script>

@@ -30,6 +30,30 @@
   margin-bottom: $spacing-md;
 }
 
+.form__group--password .form__password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form__password-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  padding: 0;
+  color: $color-gray;
+  transition: color 0.2s;
+}
+
+.form__password-toggle:hover {
+  color: $color-primary;
+}
+
 .form__radio-group {
   display: flex;
   gap: 1.5rem;

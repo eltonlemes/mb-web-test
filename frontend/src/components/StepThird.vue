@@ -1,14 +1,20 @@
 <template>
   <div>
-    <div class="form__group">
+    <div class="form__group form__group--password">
       <label for="senha">Sua senha</label>
-      <input
-        id="senha"
-        type="password"
-        v-model="formStore.stepThird.senha"
-        :class="`form__field form__field--${senhaClass}`"
-        placeholder="Digite sua senha"
-      />
+      <div class="form__password-wrapper">
+        <input
+          id="senha"
+          :type="showPassword ? 'text' : 'password'"
+          v-model="formStore.stepThird.senha"
+          :class="`form__field form__field--${senhaClass}`"
+          placeholder="Digite sua senha"
+        />
+        <button type="button" class="form__password-toggle" @click="togglePassword">
+          <span v-if="showPassword">🕶️</span>
+          <span v-else>👓</span>
+        </button>
+      </div>
     </div>
     <div class="form__actions" style="display: flex; gap: 1rem">
       <button class="btn btn--secondary" @click="prevStep">Voltar</button>
@@ -19,11 +25,16 @@
 
 <script setup>
 import { formStore } from "../store/formStore.js";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 onMounted(() => {
   formStore.currentTitle = "Senha de acesso";
 });
+
+const showPassword = ref(false);
+function togglePassword() {
+  showPassword.value = !showPassword.value;
+}
 
 const senhaClass = computed(() => {
   const senha = formStore.stepThird.senha;

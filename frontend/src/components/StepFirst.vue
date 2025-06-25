@@ -35,8 +35,12 @@
 
 <script setup>
 import { formStore } from "../store/formStore.js";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { isValidEmail } from "../helpers.js";
+
+onMounted(() => {
+  formStore.currentTitle = formStore.stepFirst.title;
+});
 
 const emailClass = computed(() => {
   const email = formStore.stepFirst.email;

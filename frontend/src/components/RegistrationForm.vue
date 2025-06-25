@@ -8,8 +8,9 @@
         }}</span>
         de 4
       </div>
-      <h1 class="registration-form__title">{{ formStore.stepFirst.title }}</h1>
+      <h1 class="registration-form__title">{{ formStore.currentTitle }}</h1>
       <StepFirst v-if="formStore.currentStep === 1" />
+      <StepSecond v-if="formStore.currentStep === 2" />
     </div>
   </div>
 </template>
@@ -17,4 +18,5 @@
 <script setup>
 import { formStore } from "../store/formStore.js";
 import StepFirst from "./StepFirst.vue";
+import StepSecond from "./StepSecond.vue";
 </script>

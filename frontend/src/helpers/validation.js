@@ -2,14 +2,16 @@ import { formStore } from "../store/formStore.js";
 import {
   isValidEmail,
   isValidNome,
+  isValidSenha,
   isValidCPF,
   isValidCNPJ,
   isValidDate,
   isValidTelefone,
 } from "./utils.js";
 
+import { PERSON_TYPES } from "../components/constants.js";
+
 /**
- * Verifica se o usuário pode continuar para o próximo passo
  * Primeiro passo: Verifica se o email é válido
  * Segundo passo: Verifica se o tipo de cadastro está selecionado
  * @returns {boolean}
@@ -19,8 +21,14 @@ export function canContinueStep1() {
   return formStore.stepFirst.tipoCadastro;
 }
 
+/**
+ * Primeiro passo: Verifica se é Pessoa Física ou Pessoa Jurídica
+ * Segundo passo: Se for Pessoa Física, verifica se o nome é válido, se o CPF é válido, se a data de nascimento é válida e se o telefone é válido
+ * Terceiro passo: Se for Pessoa Jurídica, verifica se a razão social é válida, se o CNPJ é válido, se a data de abertura é válida e se o telefone é válido
+ * @returns {boolean}
+ */
 export function canContinueStep2() {
-  if (formStore.stepFirst.tipoCadastro === "PF") {
+  if (formStore.stepFirst.tipoCadastro === PERSON_TYPES.PF) {
     if (!isValidNome(formStore.stepSecond.nome)) return false;
     if (!isValidCPF(formStore.stepSecond.cpf)) return false;
     if (!isValidDate(formStore.stepSecond.dataNascimento)) return false;
@@ -34,10 +42,18 @@ export function canContinueStep2() {
   return true;
 }
 
+/**
+ * Terceiro passo: Verifica se a senha é válida
+ * @returns {boolean}
+ */
 export function canContinueStep3() {
-  return formStore.stepThird.senha && formStore.stepThird.senha.length >= 6;
+  return isValidSenha(formStore.stepThird.senha);
 }
 
+/**
+ * Quarto passo: Sempre pode continuar na revisão
+ * @returns {boolean}
+ */
 export function canContinueStep4() {
   return true; // Sempre pode continuar na revisão
 }

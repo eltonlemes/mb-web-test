@@ -10,4 +10,10 @@ const STEPS = {
   STEP_REVIEW: 4,
 };
 
-export { PERSON_TYPES, STEPS };
+const FEEDBACK_TYPES = {
+  DEFAULT: "default",
+  SUCCESS: "success",
+  ERROR: "error",
+};
+
+export { PERSON_TYPES, STEPS, FEEDBACK_TYPES };

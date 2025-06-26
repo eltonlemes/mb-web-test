@@ -22,7 +22,8 @@
 <script setup>
 import { formStore } from "../store/formStore.js";
 import { computed, ref } from "vue";
-
+import { isValidSenha } from "../helpers/utils.js";
+import { FEEDBACK_TYPES } from "./constants.js";
 const showPassword = ref(false);
 function togglePassword() {
   showPassword.value = !showPassword.value;
@@ -30,7 +31,7 @@ function togglePassword() {
 
 const senhaClass = computed(() => {
   const senha = formStore.stepThird.senha;
-  if (senha === "") return "default";
-  return senha.length >= 6 ? "success" : "error";
+  if (senha === "") return FEEDBACK_TYPES.DEFAULT;
+  return isValidSenha(senha) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 });
 </script>

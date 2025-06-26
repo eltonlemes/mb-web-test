@@ -16,11 +16,11 @@
     <div class="form__group" v-if="showPersonType">
       <div class="form__radio-group">
         <label>
-          <input type="radio" value="PF" v-model="formStore.stepFirst.tipoCadastro" />
+          <input type="radio" :value="PERSON_TYPES.PF" v-model="formStore.stepFirst.tipoCadastro" />
           Pessoa física
         </label>
         <label>
-          <input type="radio" value="PJ" v-model="formStore.stepFirst.tipoCadastro" />
+          <input type="radio" :value="PERSON_TYPES.PJ" v-model="formStore.stepFirst.tipoCadastro" />
           Pessoa jurídica
         </label>
       </div>
@@ -32,14 +32,15 @@
 import { computed } from "vue";
 import { isValidEmail } from "../helpers/utils.js";
 import { formStore } from "../store/formStore.js";
+import { PERSON_TYPES, FEEDBACK_TYPES } from "./constants.js";
 const props = defineProps({
   showPersonType: { type: Boolean, default: true },
 });
 
 const emailClass = computed(() => {
   const email = formStore.stepFirst.email;
-  if (email === "") return "default";
-  if (!isValidEmail(email)) return "error";
-  return "success";
+  if (email === "") return FEEDBACK_TYPES.DEFAULT;
+  if (!isValidEmail(email)) return FEEDBACK_TYPES.ERROR;
+  return FEEDBACK_TYPES.SUCCESS;
 });
 </script>

@@ -43,7 +43,7 @@
           v-if="formStore.currentStep === STEPS.STEP_REVIEW"
           class="btn btn--primary"
           @click="submitForm"
-          :disabled="loading"
+          :disabled="!canRegister || loading"
         >
           {{ loading ? "Enviando..." : "Cadastrar" }}
         </button>
@@ -66,15 +66,19 @@ import {
   canContinueStep4,
 } from "../helpers/validation.js";
 
-const titles = ["Seja bem vindo(a)", "Senha de acesso", "Revise suas informações"];
-
 const currentTitle = computed(() => {
-  if (formStore.currentStep === STEPS.STEP_SECOND) {
-    return formStore.stepFirst.tipoCadastro === PERSON_TYPES.PJ
-      ? "Pessoa Jurídica"
-      : "Pessoa Física";
+  switch (formStore.currentStep) {
+    case STEPS.STEP_SECOND:
+      return formStore.stepFirst.tipoCadastro === PERSON_TYPES.PJ
+        ? "Pessoa Jurídica"
+        : "Pessoa Física";
+    case STEPS.STEP_THIRD:
+      return "Senha de acesso";
+    case STEPS.STEP_REVIEW:
+      return "Revise suas informações";
+    default:
+      return "Seja bem vindo(a)";
   }
-  return titles[formStore.currentStep - 1];
 });
 
 const feedback = ref(null);
@@ -134,10 +138,12 @@ const canContinue = computed(() => {
       return canContinueStep2();
     case STEPS.STEP_THIRD:
       return canContinueStep3();
-    case STEPS.STEP_REVIEW:
-      return canContinueStep4();
     default:
       return false;
   }
+});
+
+const canRegister = computed(() => {
+  return canContinueStep1() && canContinueStep2() && canContinueStep3();
 });
 </script>

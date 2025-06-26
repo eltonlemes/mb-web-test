@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Campos para Pessoa Física -->
-    <template v-if="formStore.stepFirst.tipoCadastro === 'PF'">
+    <template v-if="formStore.stepFirst.tipoCadastro === PERSON_TYPES.PF">
       <div class="form__group">
         <label for="nome">Nome</label>
         <input
@@ -92,37 +92,48 @@ import {
   isValidTelefone,
   isValidDate,
 } from "../helpers/utils.js";
+import { PERSON_TYPES, FEEDBACK_TYPES } from "./constants.js";
 
 const nomeClass = computed(() => {
-  if (!formStore.stepSecond.nome) return "default";
-  return isValidNome(formStore.stepSecond.nome) ? "success" : "error";
+  if (!formStore.stepSecond.nome) return FEEDBACK_TYPES.DEFAULT;
+  return isValidNome(formStore.stepSecond.nome) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 });
 const razaoSocialClass = computed(() => {
-  if (!formStore.stepSecond.razaoSocial) return "default";
-  return isValidNome(formStore.stepSecond.razaoSocial) ? "success" : "error";
+  if (!formStore.stepSecond.razaoSocial) return FEEDBACK_TYPES.DEFAULT;
+  return isValidNome(formStore.stepSecond.razaoSocial)
+    ? FEEDBACK_TYPES.SUCCESS
+    : FEEDBACK_TYPES.ERROR;
 });
 const cpfClass = computed(() => {
-  if (!formStore.stepSecond.cpf) return "default";
-  return isValidCPF(formStore.stepSecond.cpf) ? "success" : "error";
+  if (!formStore.stepSecond.cpf) return FEEDBACK_TYPES.DEFAULT;
+  return isValidCPF(formStore.stepSecond.cpf) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 });
 const cnpjClass = computed(() => {
-  if (!formStore.stepSecond.cnpj) return "default";
-  return isValidCNPJ(formStore.stepSecond.cnpj) ? "success" : "error";
+  if (!formStore.stepSecond.cnpj) return FEEDBACK_TYPES.DEFAULT;
+  return isValidCNPJ(formStore.stepSecond.cnpj) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 });
 const dataNascimentoClass = computed(() => {
-  if (!formStore.stepSecond.dataNascimento) return "default";
-  return isValidDate(formStore.stepSecond.dataNascimento) ? "success" : "error";
+  if (!formStore.stepSecond.dataNascimento) return FEEDBACK_TYPES.DEFAULT;
+  return isValidDate(formStore.stepSecond.dataNascimento)
+    ? FEEDBACK_TYPES.SUCCESS
+    : FEEDBACK_TYPES.ERROR;
 });
 const dataAberturaClass = computed(() => {
-  if (!formStore.stepSecond.dataAbertura) return "default";
-  return isValidDate(formStore.stepSecond.dataAbertura) ? "success" : "error";
+  if (!formStore.stepSecond.dataAbertura) return FEEDBACK_TYPES.DEFAULT;
+  return isValidDate(formStore.stepSecond.dataAbertura)
+    ? FEEDBACK_TYPES.SUCCESS
+    : FEEDBACK_TYPES.ERROR;
 });
 const telefoneClass = computed(() => {
-  if (!formStore.stepSecond.telefone) return "default";
-  return isValidTelefone(formStore.stepSecond.telefone) ? "success" : "error";
+  if (!formStore.stepSecond.telefone) return FEEDBACK_TYPES.DEFAULT;
+  return isValidTelefone(formStore.stepSecond.telefone)
+    ? FEEDBACK_TYPES.SUCCESS
+    : FEEDBACK_TYPES.ERROR;
 });
 const telefonePJClass = computed(() => {
-  if (!formStore.stepSecond.telefonePJ) return "default";
-  return isValidTelefone(formStore.stepSecond.telefonePJ) ? "success" : "error";
+  if (!formStore.stepSecond.telefonePJ) return FEEDBACK_TYPES.DEFAULT;
+  return isValidTelefone(formStore.stepSecond.telefonePJ)
+    ? FEEDBACK_TYPES.SUCCESS
+    : FEEDBACK_TYPES.ERROR;
 });
 </script>

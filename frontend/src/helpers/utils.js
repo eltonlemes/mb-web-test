@@ -1,11 +1,26 @@
+/**
+ * Verifica se o email é válido
+ * @param {string} email
+ * @returns {boolean}
+ */
 export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email);
 }
 
+/**
+ * Verifica se o nome é válido
+ * @param {string} nome
+ * @returns {boolean}
+ */
 export function isValidNome(nome) {
   return nome && nome.trim().length > 2;
 }
 
+/**
+ * Verifica se o CPF é válido
+ * @param {string} cpf
+ * @returns {boolean}
+ */
 export function isValidCPF(cpf) {
   cpf = cpf.replace(/\D/g, "");
   if (cpf.length !== 11) return false;
@@ -30,6 +45,20 @@ export function isValidCPF(cpf) {
   return true;
 }
 
+/**
+ * Verifica se a senha é válida
+ * @param {string} senha
+ * @returns {boolean}
+ */
+export function isValidSenha(senha) {
+  return senha && senha.trim().length >= 6;
+}
+
+/**
+ * Verifica se o CNPJ é válido
+ * @param {string} cnpj
+ * @returns {boolean}
+ */
 export function isValidCNPJ(cnpj) {
   cnpj = cnpj.replace(/\D/g, "");
   if (cnpj.length !== 14) return false;
@@ -62,6 +91,11 @@ export function isValidCNPJ(cnpj) {
   return true;
 }
 
+/**
+ * Verifica se o telefone é válido
+ * @param {string} telefone
+ * @returns {boolean}
+ */
 export function isValidTelefone(telefone) {
   telefone = telefone.replace(/\D/g, "");
   if (!/^\d{10,11}$/.test(telefone)) return false;
@@ -75,6 +109,11 @@ export function isValidTelefone(telefone) {
   return true;
 }
 
+/**
+ * Verifica se a data é válida
+ * @param {string} dateStr
+ * @returns {boolean}
+ */
 export function isValidDate(dateStr) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
   const date = new Date(dateStr);

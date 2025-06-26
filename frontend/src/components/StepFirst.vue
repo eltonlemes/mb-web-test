@@ -13,7 +13,7 @@
     </div>
 
     <!-- Tipo de cadastro -->
-    <div class="form__group" v-if="showTipoCadastro">
+    <div class="form__group" v-if="showPersonType">
       <div class="form__radio-group">
         <label>
           <input type="radio" value="PF" v-model="formStore.stepFirst.tipoCadastro" />
@@ -29,12 +29,11 @@
 </template>
 
 <script setup>
-import { formStore } from "../store/formStore.js";
 import { computed } from "vue";
-import { isValidEmail } from "../helpers.js";
-
+import { isValidEmail } from "../helpers/utils.js";
+import { formStore } from "../store/formStore.js";
 const props = defineProps({
-  showTipoCadastro: { type: Boolean, default: true },
+  showPersonType: { type: Boolean, default: true },
 });
 
 const emailClass = computed(() => {

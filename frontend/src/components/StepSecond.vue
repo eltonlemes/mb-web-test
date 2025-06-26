@@ -85,7 +85,13 @@
 <script setup>
 import { formStore } from "../store/formStore.js";
 import { computed } from "vue";
-import { isValidNome, isValidCPF, isValidCNPJ, isValidTelefone, isValidDate } from "../helpers.js";
+import {
+  isValidNome,
+  isValidCPF,
+  isValidCNPJ,
+  isValidTelefone,
+  isValidDate,
+} from "../helpers/utils.js";
 
 const nomeClass = computed(() => {
   if (!formStore.stepSecond.nome) return "default";

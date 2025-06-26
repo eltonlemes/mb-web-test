@@ -1,15 +1,13 @@
 import { reactive } from "vue";
-
+import { STEPS } from "../components/constants.js";
 export const formStore = reactive({
-  currentStep: 1,
+  currentStep: STEPS.STEP_FIRST,
   currentTitle: "",
   stepFirst: {
-    id: 1,
     email: "",
     tipoCadastro: "", // 'PF' ou 'PJ'
   },
   stepSecond: {
-    id: 2,
     // PF
     nome: "",
     cpf: "",
@@ -22,7 +20,6 @@ export const formStore = reactive({
     telefonePJ: "",
   },
   stepThird: {
-    id: 3,
     senha: "",
   },
 });

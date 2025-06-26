@@ -10,13 +10,13 @@
       </div>
       <h1 class="registration-form__title">{{ currentTitle }}</h1>
 
-      <StepFirst v-if="formStore.currentStep === 1" :showTipoCadastro="true" />
-      <StepSecond v-if="formStore.currentStep === 2" />
-      <StepThird v-if="formStore.currentStep === 3" />
+      <StepFirst v-if="formStore.currentStep === STEPS.STEP_FIRST" />
+      <StepSecond v-if="formStore.currentStep === STEPS.STEP_SECOND" />
+      <StepThird v-if="formStore.currentStep === STEPS.STEP_THIRD" />
 
       <!-- No passo 4, renderiza todos os steps para revisão/edição -->
-      <template v-if="formStore.currentStep === 4">
-        <StepFirst :showTipoCadastro="false" />
+      <template v-if="formStore.currentStep === STEPS.STEP_REVIEW">
+        <StepFirst :showPersonType="false" />
         <StepSecond />
         <StepThird />
       </template>
@@ -24,7 +24,7 @@
       <div v-if="feedback" :class="['form__feedback', feedback.type]">{{ feedback.message }}</div>
       <div class="form__actions" style="display: flex; gap: 1rem">
         <button
-          v-if="formStore.currentStep > 1"
+          v-if="formStore.currentStep > STEPS.STEP_FIRST"
           class="btn btn--secondary"
           @click="prevStep"
           :disabled="loading"
@@ -32,7 +32,7 @@
           Voltar
         </button>
         <button
-          v-if="formStore.currentStep < 4"
+          v-if="formStore.currentStep < STEPS.STEP_REVIEW"
           class="btn btn--primary"
           @click="nextStep"
           :disabled="!canContinue || loading"
@@ -40,7 +40,7 @@
           Continuar
         </button>
         <button
-          v-if="formStore.currentStep === 4"
+          v-if="formStore.currentStep === STEPS.STEP_REVIEW"
           class="btn btn--primary"
           @click="submitForm"
           :disabled="loading"
@@ -58,17 +58,21 @@ import { formStore } from "../store/formStore.js";
 import StepFirst from "./StepFirst.vue";
 import StepSecond from "./StepSecond.vue";
 import StepThird from "./StepThird.vue";
+import { PERSON_TYPES, STEPS } from "./constants.js";
+import {
+  canContinueStep1,
+  canContinueStep2,
+  canContinueStep3,
+  canContinueStep4,
+} from "../helpers/validation.js";
 
-const titles = [
-  "Seja bem vindo(a)",
-  formStore.stepFirst.tipoCadastro === "PJ" ? "Pessoa Jurídica" : "Pessoa Física",
-  "Senha de acesso",
-  "Revise suas informações",
-];
+const titles = ["Seja bem vindo(a)", "Senha de acesso", "Revise suas informações"];
 
 const currentTitle = computed(() => {
-  if (formStore.currentStep === 2) {
-    return formStore.stepFirst.tipoCadastro === "PJ" ? "Pessoa Jurídica" : "Pessoa Física";
+  if (formStore.currentStep === STEPS.STEP_SECOND) {
+    return formStore.stepFirst.tipoCadastro === PERSON_TYPES.PJ
+      ? "Pessoa Jurídica"
+      : "Pessoa Física";
   }
   return titles[formStore.currentStep - 1];
 });
@@ -77,10 +81,10 @@ const feedback = ref(null);
 const loading = ref(false);
 
 function prevStep() {
-  if (formStore.currentStep > 1) formStore.currentStep--;
+  if (formStore.currentStep > STEPS.STEP_FIRST) formStore.currentStep--;
 }
 function nextStep() {
-  if (canContinue.value && formStore.currentStep < 4) formStore.currentStep++;
+  if (canContinue.value && formStore.currentStep < STEPS.STEP_REVIEW) formStore.currentStep++;
 }
 async function submitForm() {
   feedback.value = null;
@@ -123,29 +127,17 @@ async function submitForm() {
 
 // Validação centralizada para cada step
 const canContinue = computed(() => {
-  if (formStore.currentStep === 1) {
-    return formStore.stepFirst.email && formStore.stepFirst.tipoCadastro;
+  switch (formStore.currentStep) {
+    case STEPS.STEP_FIRST:
+      return canContinueStep1();
+    case STEPS.STEP_SECOND:
+      return canContinueStep2();
+    case STEPS.STEP_THIRD:
+      return canContinueStep3();
+    case STEPS.STEP_REVIEW:
+      return canContinueStep4();
+    default:
+      return false;
   }
-  if (formStore.currentStep === 2) {
-    if (formStore.stepFirst.tipoCadastro === "PF") {
-      return (
-        formStore.stepSecond.nome &&
-        formStore.stepSecond.cpf &&
-        formStore.stepSecond.dataNascimento &&
-        formStore.stepSecond.telefone
-      );
-    } else {
-      return (
-        formStore.stepSecond.razaoSocial &&
-        formStore.stepSecond.cnpj &&
-        formStore.stepSecond.dataAbertura &&
-        formStore.stepSecond.telefonePJ
-      );
-    }
-  }
-  if (formStore.currentStep === 3) {
-    return formStore.stepThird.senha && formStore.stepThird.senha.length >= 6;
-  }
-  return true;
 });
 </script>

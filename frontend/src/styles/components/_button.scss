@@ -7,7 +7,8 @@
   padding: 0.75rem 0;
   border-radius: 6px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: 0.8px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, opacity 0.2s;
   border: none;
@@ -25,4 +26,16 @@
   color: $color-white;
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+.btn--secondary {
+  background: none;
+  border: 2px solid $color-primary;
+  color: $color-primary;
+}
+
+.btn--secondary:disabled,
+.btn--secondary[disabled] {
+  border-color: color.adjust($color-primary, $lightness: 30%);
+  color: color.adjust($color-primary, $lightness: 30%);
 }

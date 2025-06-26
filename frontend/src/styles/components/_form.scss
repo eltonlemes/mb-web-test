@@ -14,13 +14,18 @@
   transition: border-color 0.2s;
   outline: none;
   &--error {
-    border-color: #e53935;
+    border-color: $color-error;
+    box-shadow: 0 0 0 3px rgba(239, 71, 35, 0.3) !important;
   }
   &--success {
-    border-color: $color-primary;
+    border-color: $color-success;
+    box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.3) !important;
   }
   &--default {
     border-color: $color-black;
+  }
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -59,7 +64,7 @@
   width: 18px;
   height: 18px;
   border: 2px solid $color-black;
-  border-radius: 80% 50% 50% 60%;
+  border-radius: $border-radio;
   display: inline-grid;
   place-content: center;
   cursor: pointer;
@@ -67,14 +72,14 @@
 }
 
 .form__radio-group input[type="radio"]:checked {
-  border-color: $color-primary;
+  border-color: $color-success;
 }
 
 .form__radio-group input[type="radio"]::before {
   content: "";
   width: 6px;
   height: 6px;
-  border-radius: 80% 50% 50% 60%;
+  border-radius: $border-radio;
   border: 2px solid $color-black;
   transform: scale(1);
   transition: transform 0.2s;
@@ -82,5 +87,5 @@
 }
 
 .form__radio-group input[type="radio"]:checked::before {
-  border-color: $color-primary;
+  border-color: $color-success;
 }

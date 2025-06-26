@@ -7,24 +7,6 @@
   font-family: $font-main;
 }
 
-.registration-form__card {
-  width: 100%;
-  max-width: 450px;
-  background: $color-white;
-  padding: $spacing-lg $spacing-md;
-  display: flex;
-  flex-direction: column;
-}
-
-.registration-form__step-indicator {
-  margin-bottom: $spacing-xs;
-}
-
-.registration-form__step-indicator--highlight {
-  color: $color-primary;
-  font-weight: bold;
-}
-
 .registration-form__title {
   margin-bottom: $spacing-lg;
 }

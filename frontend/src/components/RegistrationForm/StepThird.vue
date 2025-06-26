@@ -20,10 +20,10 @@
 </template>
 
 <script setup>
-import { formStore } from "../store/formStore.js";
+import { formStore } from "@store/formStore.js";
 import { computed, ref } from "vue";
-import { isValidSenha } from "../helpers/utils.js";
-import { FEEDBACK_TYPES } from "./constants.js";
+import { isValidSenha } from "@helpers/utils.js";
+import { FEEDBACK_TYPES } from "@components/constants.js";
 const showPassword = ref(false);
 function togglePassword() {
   showPassword.value = !showPassword.value;

@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-import { formStore } from "../store/formStore.js";
+import { formStore } from "@store/formStore.js";
 import { computed } from "vue";
 import {
   isValidNome,
@@ -91,8 +91,8 @@ import {
   isValidCNPJ,
   isValidTelefone,
   isValidDate,
-} from "../helpers/utils.js";
-import { PERSON_TYPES, FEEDBACK_TYPES } from "./constants.js";
+} from "@helpers/utils.js";
+import { PERSON_TYPES, FEEDBACK_TYPES } from "@components/constants.js";
 
 const nomeClass = computed(() => {
   if (!formStore.stepSecond.nome) return FEEDBACK_TYPES.DEFAULT;

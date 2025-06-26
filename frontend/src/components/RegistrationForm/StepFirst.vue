@@ -30,9 +30,9 @@
 
 <script setup>
 import { computed } from "vue";
-import { isValidEmail } from "../helpers/utils.js";
-import { formStore } from "../store/formStore.js";
-import { PERSON_TYPES, FEEDBACK_TYPES } from "./constants.js";
+import { isValidEmail } from "@helpers/utils.js";
+import { formStore } from "@store/formStore.js";
+import { PERSON_TYPES, FEEDBACK_TYPES } from "@components/constants.js";
 const props = defineProps({
   showPersonType: { type: Boolean, default: true },
 });

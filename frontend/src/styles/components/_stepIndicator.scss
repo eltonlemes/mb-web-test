@@ -1,0 +1,10 @@
+@use "../_variables" as *;
+
+.step-indicator {
+  margin-bottom: $spacing-xs;
+}
+
+.step-indicator__highlight {
+  color: $color-primary;
+  font-weight: bold;
+}

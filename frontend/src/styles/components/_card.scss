@@ -1,0 +1,9 @@
+@use "../_variables" as *;
+.card {
+  width: 100%;
+  max-width: 450px;
+  background: $color-white;
+  padding: $spacing-lg $spacing-md;
+  display: flex;
+  flex-direction: column;
+}

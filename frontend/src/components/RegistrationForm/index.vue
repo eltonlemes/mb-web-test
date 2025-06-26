@@ -1,13 +1,8 @@
 <template>
   <div class="registration-form">
-    <div class="registration-form__card">
-      <div class="registration-form__step-indicator">
-        Etapa
-        <span class="registration-form__step-indicator--highlight">{{
-          formStore.currentStep
-        }}</span>
-        de 4
-      </div>
+    <Card>
+      <StepIndicator :currentStep="formStore.currentStep" :totalSteps="STEPS.STEP_REVIEW" />
+
       <h1 class="registration-form__title">{{ currentTitle }}</h1>
 
       <StepFirst v-if="formStore.currentStep === STEPS.STEP_FIRST" />
@@ -22,6 +17,7 @@
       </template>
 
       <div v-if="feedback" :class="['form__feedback', feedback.type]">{{ feedback.message }}</div>
+
       <div class="form__actions" style="display: flex; gap: 1rem">
         <button
           v-if="formStore.currentStep > STEPS.STEP_FIRST"
@@ -48,23 +44,25 @@
           {{ loading ? "Enviando..." : "Cadastrar" }}
         </button>
       </div>
-    </div>
+    </Card>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
-import { formStore } from "../store/formStore.js";
+import { formStore } from "@store/formStore.js";
 import StepFirst from "./StepFirst.vue";
 import StepSecond from "./StepSecond.vue";
 import StepThird from "./StepThird.vue";
-import { PERSON_TYPES, STEPS } from "./constants.js";
+import StepIndicator from "@components/StepIndicator/index.vue";
+import Card from "@components/Card/index.vue";
+import { PERSON_TYPES, STEPS } from "@components/constants.js";
 import {
   canContinueStep1,
   canContinueStep2,
   canContinueStep3,
   canContinueStep4,
-} from "../helpers/validation.js";
+} from "@helpers/validation.js";
 
 const currentTitle = computed(() => {
   switch (formStore.currentStep) {

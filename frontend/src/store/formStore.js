@@ -5,7 +5,6 @@ export const formStore = reactive({
   currentTitle: "",
   stepFirst: {
     id: 1,
-    title: "Seja bem vindo(a)",
     email: "",
     tipoCadastro: "", // 'PF' ou 'PJ'
   },

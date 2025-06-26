@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form__group form__group--password">
+    <div class="form__group">
       <label for="senha">Sua senha</label>
       <div class="form__password-wrapper">
         <input

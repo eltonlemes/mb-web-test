@@ -3,7 +3,6 @@
 .registration-form {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
   margin-top: $spacing-xxl;
   font-family: $font-main;
 }
@@ -12,18 +11,13 @@
   width: 100%;
   max-width: 450px;
   background: $color-white;
-  border-radius: 12px;
   padding: $spacing-lg $spacing-md;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 }
 
 .registration-form__step-indicator {
-  font-size: $font-size-sm;
-  margin-bottom: $spacing-md;
-  text-align: left;
+  margin-bottom: $spacing-xs;
 }
 
 .registration-form__step-indicator--highlight {
@@ -32,8 +26,5 @@
 }
 
 .registration-form__title {
-  font-size: $font-size-lg;
-  font-weight: bold;
   margin-bottom: $spacing-lg;
-  text-align: left;
 }

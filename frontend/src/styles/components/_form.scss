@@ -31,10 +31,8 @@
   margin-bottom: $spacing-md;
 }
 
-.form__group--password .form__password-wrapper {
+.form__password-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .form__password-toggle {
@@ -46,37 +44,26 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.2rem;
-  padding: 0;
-  color: $color-gray;
-  transition: color 0.2s;
-}
-
-.form__password-toggle:hover {
-  color: $color-primary;
 }
 
 .form__radio-group {
   display: flex;
-  gap: 1.5rem;
-  margin-top: 0.25rem;
+  gap: $spacing-md;
 }
 
 .form__radio-group input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
-  background-color: #fff;
   margin: 0 0.5rem 0 0;
   font: inherit;
   width: 18px;
   height: 18px;
   border: 2px solid $color-black;
-  border-radius: 50%;
+  border-radius: 80% 50% 50% 60%;
   display: inline-grid;
   place-content: center;
   cursor: pointer;
   transition: border-color 0.2s;
-  outline: none;
-  box-shadow: none;
 }
 
 .form__radio-group input[type="radio"]:checked {
@@ -85,15 +72,15 @@
 
 .form__radio-group input[type="radio"]::before {
   content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: $color-primary;
-  transform: scale(0);
+  width: 6px;
+  height: 6px;
+  border-radius: 80% 50% 50% 60%;
+  border: 2px solid $color-black;
+  transform: scale(1);
   transition: transform 0.2s;
   display: block;
 }
 
 .form__radio-group input[type="radio"]:checked::before {
-  transform: scale(1);
+  border-color: $color-primary;
 }

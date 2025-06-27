@@ -89,3 +89,14 @@
 .form__radio-group input[type="radio"]:checked::before {
   border-color: $color-success;
 }
+
+.form__feedback {
+  margin-top: $spacing-md;
+  font-size: 0.8rem;
+  &--success {
+    color: $color-success;
+  }
+  &--error {
+    color: $color-error;
+  }
+}

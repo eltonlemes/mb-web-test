@@ -17,6 +17,7 @@ export default defineConfig({
       "@helpers": fileURLToPath(new URL("./src/helpers", import.meta.url)),
       "@store": fileURLToPath(new URL("./src/store", import.meta.url)),
       "@styles": fileURLToPath(new URL("./src/styles", import.meta.url)),
+      "@services": fileURLToPath(new URL("./src/services", import.meta.url)),
     },
   },
 });

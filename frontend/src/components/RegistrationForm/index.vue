@@ -18,8 +18,6 @@
         <StepThird />
       </template>
 
-      <div v-if="feedback" :class="['form__feedback', feedback.type]">{{ feedback.message }}</div>
-
       <Actions />
     </Card>
   </div>

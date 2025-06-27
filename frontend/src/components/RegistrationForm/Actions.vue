@@ -25,6 +25,8 @@
       {{ loading ? "Enviando..." : "Cadastrar" }}
     </button>
   </div>
+
+  <div v-if="feedback" :class="['form__feedback', feedback.type]">{{ feedback.message }}</div>
 </template>
 
 <script setup>
@@ -32,6 +34,7 @@ import { formStore } from "@store/formStore.js";
 import { STEPS } from "@components/constants.js";
 import { ref, computed } from "vue";
 import { canContinueStep1, canContinueStep2, canContinueStep3 } from "@helpers/validation.js";
+import { submitRegistration } from "@services/api/registration.js";
 
 const feedback = ref(null);
 const loading = ref(false);
@@ -60,6 +63,7 @@ function nextStep() {
 async function submitForm() {
   feedback.value = null;
   loading.value = true;
+
   // Monta o payload para o backend
   const payload = {
     email: formStore.stepFirst.email,
@@ -74,23 +78,26 @@ async function submitForm() {
     telefonePJ: formStore.stepSecond.telefonePJ,
     senha: formStore.stepThird.senha,
   };
+
   try {
-    const res = await fetch("/registration", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (res.ok) {
+    const result = await submitRegistration(payload);
+
+    if (result.success) {
       feedback.value = {
-        type: "success",
-        message: data.message || "Cadastro realizado com sucesso!",
+        type: "form__feedback--success",
+        message: result.message,
       };
     } else {
-      feedback.value = { type: "error", message: data.error || "Erro ao cadastrar." };
+      feedback.value = {
+        type: "form__feedback--error",
+        message: result.message,
+      };
     }
-  } catch (e) {
-    feedback.value = { type: "error", message: "Erro de conexão com o servidor." };
+  } catch (error) {
+    feedback.value = {
+      type: "form__feedback--error",
+      message: error.message || "Erro de conexão com o servidor.",
+    };
   } finally {
     loading.value = false;
   }

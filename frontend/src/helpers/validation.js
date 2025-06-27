@@ -5,7 +5,8 @@ import {
   isValidSenha,
   isValidCPF,
   isValidCNPJ,
-  isValidDate,
+  isValidDataNascimento,
+  isValidDataAbertura,
   isValidTelefone,
 } from "./utils.js";
 
@@ -23,7 +24,7 @@ export function canContinueStep1() {
 
 /**
  * Primeiro passo: Verifica se é Pessoa Física ou Pessoa Jurídica
- * Segundo passo: Se for Pessoa Física, verifica se o nome é válido, se o CPF é válido, se a data de nascimento é válida e se o telefone é válido
+ * Segundo passo: Se for Pessoa Física, verifica se o nome é válido, se o CPF é válido, se a data de nascimento é válida (18-150 anos) e se o telefone é válido
  * Terceiro passo: Se for Pessoa Jurídica, verifica se a razão social é válida, se o CNPJ é válido, se a data de abertura é válida e se o telefone é válido
  * @returns {boolean}
  */
@@ -31,13 +32,13 @@ export function canContinueStep2() {
   if (formStore.stepFirst.tipoCadastro === PERSON_TYPES.PF) {
     if (!isValidNome(formStore.stepSecond.nome)) return false;
     if (!isValidCPF(formStore.stepSecond.cpf)) return false;
-    if (!isValidDate(formStore.stepSecond.dataNascimento)) return false;
+    if (!isValidDataNascimento(formStore.stepSecond.dataNascimento)) return false;
     if (!isValidTelefone(formStore.stepSecond.telefone)) return false;
     return true;
   }
   if (!isValidNome(formStore.stepSecond.razaoSocial)) return false;
   if (!isValidCNPJ(formStore.stepSecond.cnpj)) return false;
-  if (!isValidDate(formStore.stepSecond.dataAbertura)) return false;
+  if (!isValidDataAbertura(formStore.stepSecond.dataAbertura)) return false;
   if (!isValidTelefone(formStore.stepSecond.telefonePJ)) return false;
   return true;
 }

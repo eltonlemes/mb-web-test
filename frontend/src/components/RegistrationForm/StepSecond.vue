@@ -90,7 +90,8 @@ import {
   isValidCPF,
   isValidCNPJ,
   isValidTelefone,
-  isValidDate,
+  isValidDataNascimento,
+  isValidDataAbertura,
 } from "@helpers/utils.js";
 import { PERSON_TYPES, FEEDBACK_TYPES } from "@components/constants.js";
 
@@ -114,13 +115,13 @@ const cnpjClass = computed(() => {
 });
 const dataNascimentoClass = computed(() => {
   if (!formStore.stepSecond.dataNascimento) return FEEDBACK_TYPES.DEFAULT;
-  return isValidDate(formStore.stepSecond.dataNascimento)
+  return isValidDataNascimento(formStore.stepSecond.dataNascimento)
     ? FEEDBACK_TYPES.SUCCESS
     : FEEDBACK_TYPES.ERROR;
 });
 const dataAberturaClass = computed(() => {
   if (!formStore.stepSecond.dataAbertura) return FEEDBACK_TYPES.DEFAULT;
-  return isValidDate(formStore.stepSecond.dataAbertura)
+  return isValidDataAbertura(formStore.stepSecond.dataAbertura)
     ? FEEDBACK_TYPES.SUCCESS
     : FEEDBACK_TYPES.ERROR;
 });

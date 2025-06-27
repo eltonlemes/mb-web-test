@@ -110,7 +110,7 @@ export function isValidTelefone(telefone) {
 }
 
 /**
- * Verifica se a data é válida
+ * Verifica se a data é válida (formato e existência)
  * @param {string} dateStr
  * @returns {boolean}
  */
@@ -121,4 +121,101 @@ export function isValidDate(dateStr) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return date <= today;
+}
+
+/**
+ * Calcula a idade baseada na data de nascimento
+ * @param {string} dateStr - Data no formato YYYY-MM-DD
+ * @returns {number} - Idade em anos
+ */
+export function calculateAge(dateStr) {
+  const birthDate = new Date(dateStr);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  // Ajusta a idade se ainda não fez aniversário este ano
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
+/**
+ * Verifica se a data de nascimento é válida e retorna informações detalhadas
+ * @param {string} dateStr - Data no formato YYYY-MM-DD
+ * @returns {{isValid: boolean, message: string, age?: number}}
+ *
+ * @example
+ * // Exemplos de uso:
+ * validateDataNascimento('2000-01-01') // { isValid: true, message: "Data de nascimento válida", age: 24 }
+ * validateDataNascimento('2010-01-01') // { isValid: false, message: "Idade mínima é 18 anos. Você tem 14 anos", age: 14 }
+ * validateDataNascimento('1800-01-01') // { isValid: false, message: "Idade máxima é 150 anos. Você tem 224 anos", age: 224 }
+ * validateDataNascimento('2025-01-01') // { isValid: false, message: "Data de nascimento não pode ser futura" }
+ */
+export function validateDataNascimento(dateStr) {
+  // Verifica formato
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return { isValid: false, message: "Formato de data inválido. Use YYYY-MM-DD" };
+  }
+
+  // Verifica se a data existe
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
+    return { isValid: false, message: "Data inválida" };
+  }
+
+  // Verifica se não é futura
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (date > today) {
+    return { isValid: false, message: "Data de nascimento não pode ser futura" };
+  }
+
+  // Calcula idade
+  const age = calculateAge(dateStr);
+
+  // Verifica idade mínima
+  if (age < 18) {
+    return {
+      isValid: false,
+      message: `Idade mínima é 18 anos. Você tem ${age} anos`,
+      age,
+    };
+  }
+
+  // Verifica idade máxima
+  if (age > 130) {
+    return {
+      isValid: false,
+      message: `Idade máxima é 130 anos. Você tem ${age} anos`,
+      age,
+    };
+  }
+
+  return {
+    isValid: true,
+    message: "Data de nascimento válida",
+    age,
+  };
+}
+
+/**
+ * Verifica se a data de nascimento é válida (entre 18 e 150 anos)
+ * @param {string} dateStr - Data no formato YYYY-MM-DD
+ * @returns {boolean}
+ */
+export function isValidDataNascimento(dateStr) {
+  return validateDataNascimento(dateStr).isValid;
+}
+
+/**
+ * Verifica se a data de abertura da empresa é válida (não pode ser futura)
+ * @param {string} dateStr - Data no formato YYYY-MM-DD
+ * @returns {boolean}
+ */
+export function isValidDataAbertura(dateStr) {
+  return isValidDate(dateStr);
 }

@@ -64,20 +64,34 @@ async function submitForm() {
   feedback.value = null;
   loading.value = true;
 
-  // Monta o payload para o backend
-  const payload = {
+  // Dados comuns para ambos os tipos
+  const basePayload = {
     email: formStore.stepFirst.email,
     tipoCadastro: formStore.stepFirst.tipoCadastro,
-    nome: formStore.stepSecond.nome,
-    cpf: formStore.stepSecond.cpf,
-    dataNascimento: formStore.stepSecond.dataNascimento,
-    telefone: formStore.stepSecond.telefone,
-    razaoSocial: formStore.stepSecond.razaoSocial,
-    cnpj: formStore.stepSecond.cnpj,
-    dataAbertura: formStore.stepSecond.dataAbertura,
-    telefonePJ: formStore.stepSecond.telefonePJ,
     senha: formStore.stepThird.senha,
   };
+
+  // Adiciona campos específicos baseado no tipo de cadastro
+  let payload;
+
+  if (formStore.stepFirst.tipoCadastro === "PF") {
+    payload = {
+      ...basePayload,
+      nome: formStore.stepSecond.nome,
+      cpf: formStore.stepSecond.cpf,
+      dataNascimento: formStore.stepSecond.dataNascimento,
+      telefone: formStore.stepSecond.telefone,
+    };
+  }
+  if (formStore.stepFirst.tipoCadastro === "PJ") {
+    payload = {
+      ...basePayload,
+      razaoSocial: formStore.stepSecond.razaoSocial,
+      cnpj: formStore.stepSecond.cnpj,
+      dataAbertura: formStore.stepSecond.dataAbertura,
+      telefonePJ: formStore.stepSecond.telefonePJ,
+    };
+  }
 
   try {
     const result = await submitRegistration(payload);

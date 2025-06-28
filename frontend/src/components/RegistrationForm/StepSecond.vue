@@ -8,8 +8,11 @@
           id="nome"
           type="text"
           v-model="formStore.stepSecond.nome"
-          :class="`form__field form__field--${nomeClass}`"
+          :class="`form__field form__field--${nomeValidation.class}`"
         />
+        <div v-if="nomeValidation.message" class="form__field-error">
+          {{ nomeValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="cpf">CPF</label>
@@ -17,8 +20,11 @@
           id="cpf"
           type="text"
           v-model="formStore.stepSecond.cpf"
-          :class="`form__field form__field--${cpfClass}`"
+          :class="`form__field form__field--${cpfValidation.class}`"
         />
+        <div v-if="cpfValidation.message" class="form__field-error">
+          {{ cpfValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="dataNascimento">Data de nascimento</label>
@@ -26,8 +32,11 @@
           id="dataNascimento"
           type="date"
           v-model="formStore.stepSecond.dataNascimento"
-          :class="`form__field form__field--${dataNascimentoClass}`"
+          :class="`form__field form__field--${dataNascimentoValidation.class}`"
         />
+        <div v-if="dataNascimentoValidation.message" class="form__field-error">
+          {{ dataNascimentoValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="telefone">Telefone</label>
@@ -35,8 +44,11 @@
           id="telefone"
           type="text"
           v-model="formStore.stepSecond.telefone"
-          :class="`form__field form__field--${telefoneClass}`"
+          :class="`form__field form__field--${telefoneValidation.class}`"
         />
+        <div v-if="telefoneValidation.message" class="form__field-error">
+          {{ telefoneValidation.message }}
+        </div>
       </div>
     </template>
 
@@ -48,8 +60,11 @@
           id="razaoSocial"
           type="text"
           v-model="formStore.stepSecond.razaoSocial"
-          :class="`form__field form__field--${razaoSocialClass}`"
+          :class="`form__field form__field--${razaoSocialValidation.class}`"
         />
+        <div v-if="razaoSocialValidation.message" class="form__field-error">
+          {{ razaoSocialValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="cnpj">CNPJ</label>
@@ -57,8 +72,11 @@
           id="cnpj"
           type="text"
           v-model="formStore.stepSecond.cnpj"
-          :class="`form__field form__field--${cnpjClass}`"
+          :class="`form__field form__field--${cnpjValidation.class}`"
         />
+        <div v-if="cnpjValidation.message" class="form__field-error">
+          {{ cnpjValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="dataAbertura">Data de abertura</label>
@@ -66,8 +84,11 @@
           id="dataAbertura"
           type="date"
           v-model="formStore.stepSecond.dataAbertura"
-          :class="`form__field form__field--${dataAberturaClass}`"
+          :class="`form__field form__field--${dataAberturaValidation.class}`"
         />
+        <div v-if="dataAberturaValidation.message" class="form__field-error">
+          {{ dataAberturaValidation.message }}
+        </div>
       </div>
       <div class="form__group">
         <label for="telefonePJ">Telefone</label>
@@ -75,8 +96,11 @@
           id="telefonePJ"
           type="text"
           v-model="formStore.stepSecond.telefonePJ"
-          :class="`form__field form__field--${telefonePJClass}`"
+          :class="`form__field form__field--${telefonePJValidation.class}`"
         />
+        <div v-if="telefonePJValidation.message" class="form__field-error">
+          {{ telefonePJValidation.message }}
+        </div>
       </div>
     </template>
   </div>
@@ -86,55 +110,28 @@
 import { formStore } from "@store/formStore.js";
 import { computed } from "vue";
 import {
-  isValidNome,
-  isValidCPF,
-  isValidCNPJ,
-  isValidTelefone,
-  isValidDataNascimento,
-  isValidDataAbertura,
+  getNomeValidation,
+  getCPFValidation,
+  getCNPJValidation,
+  getTelefoneValidation,
+  getDataNascimentoValidation,
+  getDataAberturaValidation,
 } from "@helpers/utils.js";
-import { PERSON_TYPES, FEEDBACK_TYPES } from "@components/constants.js";
+import { PERSON_TYPES } from "@components/constants.js";
 
-const nomeClass = computed(() => {
-  if (!formStore.stepSecond.nome) return FEEDBACK_TYPES.DEFAULT;
-  return isValidNome(formStore.stepSecond.nome) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
-});
-const razaoSocialClass = computed(() => {
-  if (!formStore.stepSecond.razaoSocial) return FEEDBACK_TYPES.DEFAULT;
-  return isValidNome(formStore.stepSecond.razaoSocial)
-    ? FEEDBACK_TYPES.SUCCESS
-    : FEEDBACK_TYPES.ERROR;
-});
-const cpfClass = computed(() => {
-  if (!formStore.stepSecond.cpf) return FEEDBACK_TYPES.DEFAULT;
-  return isValidCPF(formStore.stepSecond.cpf) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
-});
-const cnpjClass = computed(() => {
-  if (!formStore.stepSecond.cnpj) return FEEDBACK_TYPES.DEFAULT;
-  return isValidCNPJ(formStore.stepSecond.cnpj) ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
-});
-const dataNascimentoClass = computed(() => {
-  if (!formStore.stepSecond.dataNascimento) return FEEDBACK_TYPES.DEFAULT;
-  return isValidDataNascimento(formStore.stepSecond.dataNascimento)
-    ? FEEDBACK_TYPES.SUCCESS
-    : FEEDBACK_TYPES.ERROR;
-});
-const dataAberturaClass = computed(() => {
-  if (!formStore.stepSecond.dataAbertura) return FEEDBACK_TYPES.DEFAULT;
-  return isValidDataAbertura(formStore.stepSecond.dataAbertura)
-    ? FEEDBACK_TYPES.SUCCESS
-    : FEEDBACK_TYPES.ERROR;
-});
-const telefoneClass = computed(() => {
-  if (!formStore.stepSecond.telefone) return FEEDBACK_TYPES.DEFAULT;
-  return isValidTelefone(formStore.stepSecond.telefone)
-    ? FEEDBACK_TYPES.SUCCESS
-    : FEEDBACK_TYPES.ERROR;
-});
-const telefonePJClass = computed(() => {
-  if (!formStore.stepSecond.telefonePJ) return FEEDBACK_TYPES.DEFAULT;
-  return isValidTelefone(formStore.stepSecond.telefonePJ)
-    ? FEEDBACK_TYPES.SUCCESS
-    : FEEDBACK_TYPES.ERROR;
-});
+// Validações para Pessoa Física
+const nomeValidation = computed(() => getNomeValidation(formStore.stepSecond.nome));
+const cpfValidation = computed(() => getCPFValidation(formStore.stepSecond.cpf));
+const dataNascimentoValidation = computed(() =>
+  getDataNascimentoValidation(formStore.stepSecond.dataNascimento)
+);
+const telefoneValidation = computed(() => getTelefoneValidation(formStore.stepSecond.telefone));
+
+// Validações para Pessoa Jurídica
+const razaoSocialValidation = computed(() => getNomeValidation(formStore.stepSecond.razaoSocial));
+const cnpjValidation = computed(() => getCNPJValidation(formStore.stepSecond.cnpj));
+const dataAberturaValidation = computed(() =>
+  getDataAberturaValidation(formStore.stepSecond.dataAbertura)
+);
+const telefonePJValidation = computed(() => getTelefoneValidation(formStore.stepSecond.telefonePJ));
 </script>

@@ -100,3 +100,12 @@
     color: $color-error;
   }
 }
+
+.form__field-error {
+  font-size: 0.75rem;
+  color: $color-error;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  line-height: 1.2;
+  min-height: 1rem;
+}

@@ -7,9 +7,12 @@
         id="email"
         type="email"
         v-model="formStore.stepFirst.email"
-        :class="`form__field form__field--${emailClass}`"
+        :class="`form__field form__field--${emailValidation.class}`"
         placeholder="Digite seu e-mail"
       />
+      <div v-if="emailValidation.message" class="form__field-error">
+        {{ emailValidation.message }}
+      </div>
     </div>
 
     <!-- Tipo de cadastro -->
@@ -30,17 +33,15 @@
 
 <script setup>
 import { computed } from "vue";
-import { isValidEmail } from "@helpers/utils.js";
+import { getEmailValidation } from "@helpers/utils.js";
 import { formStore } from "@store/formStore.js";
-import { PERSON_TYPES, FEEDBACK_TYPES } from "@components/constants.js";
+import { PERSON_TYPES } from "@components/constants.js";
+
 const props = defineProps({
   showPersonType: { type: Boolean, default: true },
 });
 
-const emailClass = computed(() => {
-  const email = formStore.stepFirst.email;
-  if (email === "") return FEEDBACK_TYPES.DEFAULT;
-  if (!isValidEmail(email)) return FEEDBACK_TYPES.ERROR;
-  return FEEDBACK_TYPES.SUCCESS;
+const emailValidation = computed(() => {
+  return getEmailValidation(formStore.stepFirst.email);
 });
 </script>

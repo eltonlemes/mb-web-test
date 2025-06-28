@@ -1,3 +1,24 @@
+import { FEEDBACK_TYPES } from "../components/constants.js";
+
+/**
+ * FUNÇÕES DE VALIDAÇÃO COMPLETAS
+ *
+ * Estas funções retornam um objeto com:
+ * {
+ *   isValid: boolean,    // Se é válido
+ *   class: string,       // Classe CSS (success, error, default)
+ *   message: string      // Mensagem de erro (vazia se válido)
+ * }
+ *
+ * Exemplo de uso no componente:
+ *
+ * const emailValidation = computed(() => getEmailValidation(email.value));
+ *
+ * No template:
+ * :class="`form__field--${emailValidation.class}`"
+ * <div v-if="emailValidation.message">{{ emailValidation.message }}</div>
+ */
+
 /**
  * Verifica se o email é válido
  * @param {string} email
@@ -5,6 +26,27 @@
  */
 export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email);
+}
+
+/**
+ * Valida email e retorna informações detalhadas
+ * @param {string} email
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateEmail(email) {
+  if (!email || !email.trim()) {
+    return { isValid: false, message: "E-mail é obrigatório" };
+  }
+
+  if (email.length > 100) {
+    return { isValid: false, message: "E-mail deve ter no máximo 100 caracteres" };
+  }
+
+  if (!isValidEmail(email)) {
+    return { isValid: false, message: "E-mail inválido" };
+  }
+
+  return { isValid: true, message: "E-mail válido" };
 }
 
 /**
@@ -52,6 +94,40 @@ export function isValidCPF(cpf) {
  */
 export function isValidSenha(senha) {
   return senha && senha.trim().length >= 6;
+}
+
+/**
+ * Valida senha e retorna informações detalhadas
+ * @param {string} senha
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateSenha(senha) {
+  if (!senha || !senha.trim()) {
+    return { isValid: false, message: "Senha é obrigatória" };
+  }
+
+  if (senha.length < 6) {
+    return { isValid: false, message: "Senha deve ter pelo menos 6 caracteres" };
+  }
+
+  if (senha.length > 50) {
+    return { isValid: false, message: "Senha deve ter no máximo 50 caracteres" };
+  }
+
+  // Verificações de segurança opcionais
+  const hasUpperCase = /[A-Z]/.test(senha);
+  const hasLowerCase = /[a-z]/.test(senha);
+  const hasNumbers = /\d/.test(senha);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+
+  if (!hasUpperCase && !hasNumbers && !hasSpecialChar) {
+    return {
+      isValid: false,
+      message: "Senha deve conter pelo menos uma letra maiúscula, número ou caractere especial",
+    };
+  }
+
+  return { isValid: true, message: "Senha válida" };
 }
 
 /**
@@ -218,4 +294,468 @@ export function isValidDataNascimento(dateStr) {
  */
 export function isValidDataAbertura(dateStr) {
   return isValidDate(dateStr);
+}
+
+/**
+ * Valida nome e retorna informações detalhadas
+ * @param {string} nome
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateNome(nome) {
+  if (!nome || !nome.trim()) {
+    return { isValid: false, message: "Nome é obrigatório" };
+  }
+  if (nome.trim().length < 3) {
+    return { isValid: false, message: "Nome deve ter pelo menos 3 caracteres" };
+  }
+  if (nome.trim().length > 100) {
+    return { isValid: false, message: "Nome deve ter no máximo 100 caracteres" };
+  }
+  return { isValid: true, message: "Nome válido" };
+}
+
+/**
+ * Valida CPF e retorna informações detalhadas
+ * @param {string} cpf
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateCPF(cpf) {
+  if (!cpf || !cpf.trim()) {
+    return { isValid: false, message: "CPF é obrigatório" };
+  }
+
+  const cleanCPF = cpf.replace(/\D/g, "");
+
+  if (cleanCPF.length !== 11) {
+    return { isValid: false, message: "CPF deve ter 11 dígitos" };
+  }
+
+  if (/^(\d)\1+$/.test(cleanCPF)) {
+    return { isValid: false, message: "CPF não pode ter todos os dígitos iguais" };
+  }
+
+  if (!isValidCPF(cpf)) {
+    return { isValid: false, message: "CPF inválido" };
+  }
+
+  return { isValid: true, message: "CPF válido" };
+}
+
+/**
+ * Valida CNPJ e retorna informações detalhadas
+ * @param {string} cnpj
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateCNPJ(cnpj) {
+  if (!cnpj || !cnpj.trim()) {
+    return { isValid: false, message: "CNPJ é obrigatório" };
+  }
+
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+
+  if (cleanCNPJ.length !== 14) {
+    return { isValid: false, message: "CNPJ deve ter 14 dígitos" };
+  }
+
+  if (/^(\d)\1+$/.test(cleanCNPJ)) {
+    return { isValid: false, message: "CNPJ não pode ter todos os dígitos iguais" };
+  }
+
+  if (!isValidCNPJ(cnpj)) {
+    return { isValid: false, message: "CNPJ inválido" };
+  }
+
+  return { isValid: true, message: "CNPJ válido" };
+}
+
+/**
+ * Valida telefone e retorna informações detalhadas
+ * @param {string} telefone
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateTelefone(telefone) {
+  if (!telefone || !telefone.trim()) {
+    return { isValid: false, message: "Telefone é obrigatório" };
+  }
+
+  const cleanTelefone = telefone.replace(/\D/g, "");
+
+  if (cleanTelefone.length < 10) {
+    return { isValid: false, message: "Telefone deve ter pelo menos 10 dígitos" };
+  }
+
+  if (cleanTelefone.length > 11) {
+    return { isValid: false, message: "Telefone deve ter no máximo 11 dígitos" };
+  }
+
+  const ddd = cleanTelefone.substring(0, 2);
+  if (parseInt(ddd) < 11 || parseInt(ddd) > 99) {
+    return { isValid: false, message: "DDD inválido (deve estar entre 11 e 99)" };
+  }
+
+  if (/^(\d)\1+$/.test(cleanTelefone)) {
+    return { isValid: false, message: "Telefone não pode ter todos os dígitos iguais" };
+  }
+
+  if (cleanTelefone.length === 11 && cleanTelefone[2] !== "9") {
+    return { isValid: false, message: "Celular deve ter 9 como terceiro dígito" };
+  }
+
+  return { isValid: true, message: "Telefone válido" };
+}
+
+/**
+ * Valida data de abertura e retorna informações detalhadas
+ * @param {string} dateStr
+ * @returns {{isValid: boolean, message: string}}
+ */
+export function validateDataAbertura(dateStr) {
+  if (!dateStr || !dateStr.trim()) {
+    return { isValid: false, message: "Data de abertura é obrigatória" };
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return { isValid: false, message: "Formato de data inválido. Use YYYY-MM-DD" };
+  }
+
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
+    return { isValid: false, message: "Data inválida" };
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (date > today) {
+    return { isValid: false, message: "Data de abertura não pode ser futura" };
+  }
+
+  return { isValid: true, message: "Data de abertura válida" };
+}
+
+/**
+ * Retorna validação completa para email
+ * @param {string} email
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getEmailValidation(email) {
+  if (!email || !email.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  if (email.length > 100) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "E-mail deve ter no máximo 100 caracteres",
+    };
+  }
+
+  if (!isValidEmail(email)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "E-mail inválido",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
+}
+
+/**
+ * Retorna validação completa para nome
+ * @param {string} nome
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getNomeValidation(nome) {
+  if (!nome || !nome.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  if (nome.trim().length < 3) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Nome deve ter pelo menos 3 caracteres",
+    };
+  }
+
+  if (nome.trim().length > 100) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Nome deve ter no máximo 100 caracteres",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
+}
+
+/**
+ * Retorna validação completa para CPF
+ * @param {string} cpf
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getCPFValidation(cpf) {
+  if (!cpf || !cpf.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  const cleanCPF = cpf.replace(/\D/g, "");
+
+  if (cleanCPF.length !== 11) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CPF deve ter 11 dígitos",
+    };
+  }
+
+  if (/^(\d)\1+$/.test(cleanCPF)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CPF não pode ter todos os dígitos iguais",
+    };
+  }
+
+  if (!isValidCPF(cpf)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CPF inválido",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
+}
+
+/**
+ * Retorna validação completa para CNPJ
+ * @param {string} cnpj
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getCNPJValidation(cnpj) {
+  if (!cnpj || !cnpj.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+
+  if (cleanCNPJ.length !== 14) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CNPJ deve ter 14 dígitos",
+    };
+  }
+
+  if (/^(\d)\1+$/.test(cleanCNPJ)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CNPJ não pode ter todos os dígitos iguais",
+    };
+  }
+
+  if (!isValidCNPJ(cnpj)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "CNPJ inválido",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
+}
+
+/**
+ * Retorna validação completa para telefone
+ * @param {string} telefone
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getTelefoneValidation(telefone) {
+  if (!telefone || !telefone.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  const cleanTelefone = telefone.replace(/\D/g, "");
+
+  if (cleanTelefone.length < 10) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Telefone deve ter pelo menos 10 dígitos",
+    };
+  }
+
+  if (cleanTelefone.length > 11) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Telefone deve ter no máximo 11 dígitos",
+    };
+  }
+
+  const ddd = cleanTelefone.substring(0, 2);
+  if (parseInt(ddd) < 11 || parseInt(ddd) > 99) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "DDD inválido (deve estar entre 11 e 99)",
+    };
+  }
+
+  if (/^(\d)\1+$/.test(cleanTelefone)) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Telefone não pode ter todos os dígitos iguais",
+    };
+  }
+
+  if (cleanTelefone.length === 11 && cleanTelefone[2] !== "9") {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Celular deve ter 9 como terceiro dígito",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
+}
+
+/**
+ * Retorna validação completa para data de nascimento
+ * @param {string} dateStr
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getDataNascimentoValidation(dateStr) {
+  if (!dateStr || !dateStr.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  const validation = validateDataNascimento(dateStr);
+
+  return {
+    isValid: validation.isValid,
+    class: validation.isValid ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR,
+    message: validation.isValid ? "" : validation.message,
+  };
+}
+
+/**
+ * Retorna validação completa para data de abertura
+ * @param {string} dateStr
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getDataAberturaValidation(dateStr) {
+  if (!dateStr || !dateStr.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  const validation = validateDataAbertura(dateStr);
+
+  return {
+    isValid: validation.isValid,
+    class: validation.isValid ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR,
+    message: validation.isValid ? "" : validation.message,
+  };
+}
+
+/**
+ * Retorna validação completa para senha
+ * @param {string} senha
+ * @returns {{isValid: boolean, class: string, message: string}}
+ */
+export function getSenhaValidation(senha) {
+  if (!senha || !senha.trim()) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.DEFAULT,
+      message: "",
+    };
+  }
+
+  if (senha.length < 6) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Senha deve ter pelo menos 6 caracteres",
+    };
+  }
+
+  if (senha.length > 50) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Senha deve ter no máximo 50 caracteres",
+    };
+  }
+
+  // Verificações de segurança opcionais
+  const hasUpperCase = /[A-Z]/.test(senha);
+  const hasNumbers = /\d/.test(senha);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+
+  if (!hasUpperCase && !hasNumbers && !hasSpecialChar) {
+    return {
+      isValid: false,
+      class: FEEDBACK_TYPES.ERROR,
+      message: "Senha deve conter pelo menos uma letra maiúscula, número ou caractere especial",
+    };
+  }
+
+  return {
+    isValid: true,
+    class: FEEDBACK_TYPES.SUCCESS,
+    message: "",
+  };
 }

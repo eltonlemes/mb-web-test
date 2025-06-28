@@ -11,6 +11,8 @@
       <StepSecond v-if="formStore.currentStep === STEPS.STEP_SECOND" />
       <StepThird v-if="formStore.currentStep === STEPS.STEP_THIRD" />
 
+      <!-- <pre>{{ formStore }}</pre> -->
+
       <!-- No passo 4, renderiza todos os steps para revisão/edição -->
       <template v-if="formStore.currentStep === STEPS.STEP_REVIEW">
         <StepFirst :showPersonType="false" />

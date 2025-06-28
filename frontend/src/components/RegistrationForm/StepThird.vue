@@ -6,17 +6,18 @@
         <input
           id="senha"
           :type="showPassword ? 'text' : 'password'"
-          v-model="formStore.stepThird.senha"
-          :class="`form__field form__field--${senhaValidation.class}`"
+          v-model="formStore.fields.senha.value"
+          :class="`form__field form__field--${formStore.fields.senha.class}`"
           placeholder="Digite sua senha"
+          @input="handleInput('senha')"
         />
         <button type="button" class="form__password-toggle" @click="togglePassword">
           <span v-if="showPassword">🕶️</span>
           <span v-else>👓</span>
         </button>
       </div>
-      <div v-if="senhaValidation.message" class="form__field-error">
-        {{ senhaValidation.message }}
+      <div v-if="formStore.fields.senha.message" class="form__field-error">
+        {{ formStore.fields.senha.message }}
       </div>
     </div>
   </div>
@@ -24,16 +25,12 @@
 
 <script setup>
 import { formStore } from "@store/formStore.js";
-import { computed, ref } from "vue";
-import { getSenhaValidation } from "@helpers/utils.js";
+import { ref } from "vue";
+import { handleInput } from "@helpers/validation.js";
 
 const showPassword = ref(false);
 
 function togglePassword() {
   showPassword.value = !showPassword.value;
 }
-
-const senhaValidation = computed(() => {
-  return getSenhaValidation(formStore.stepThird.senha);
-});
 </script>

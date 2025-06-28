@@ -66,9 +66,9 @@ async function submitForm() {
 
   // Dados comuns para ambos os tipos
   const basePayload = {
-    email: formStore.stepFirst.email,
+    email: formStore.fields.email.value,
     tipoCadastro: formStore.stepFirst.tipoCadastro,
-    senha: formStore.stepThird.senha,
+    senha: formStore.fields.senha.value,
   };
 
   // Adiciona campos específicos baseado no tipo de cadastro
@@ -77,19 +77,19 @@ async function submitForm() {
   if (formStore.stepFirst.tipoCadastro === "PF") {
     payload = {
       ...basePayload,
-      nome: formStore.stepSecond.nome,
-      cpf: formStore.stepSecond.cpf,
-      dataNascimento: formStore.stepSecond.dataNascimento,
-      telefone: formStore.stepSecond.telefone,
+      nome: formStore.fields.nome.value,
+      cpf: formStore.fields.cpf.value,
+      dataNascimento: formStore.fields.dataNascimento.value,
+      telefone: formStore.fields.telefone.value,
     };
   }
   if (formStore.stepFirst.tipoCadastro === "PJ") {
     payload = {
       ...basePayload,
-      razaoSocial: formStore.stepSecond.razaoSocial,
-      cnpj: formStore.stepSecond.cnpj,
-      dataAbertura: formStore.stepSecond.dataAbertura,
-      telefonePJ: formStore.stepSecond.telefonePJ,
+      razaoSocial: formStore.fields.razaoSocial.value,
+      cnpj: formStore.fields.cnpj.value,
+      dataAbertura: formStore.fields.dataAbertura.value,
+      telefonePJ: formStore.fields.telefonePJ.value,
     };
   }
 

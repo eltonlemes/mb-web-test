@@ -6,14 +6,17 @@
       <input
         id="email"
         type="email"
-        v-model="formStore.stepFirst.email"
-        :class="`form__field form__field--${emailValidation.class}`"
+        name="email"
+        v-model="formStore.fields.email.value"
+        :class="`form__field form__field--${formStore.fields.email.class}`"
         placeholder="Digite seu e-mail"
+        @input="handleInput('email')"
       />
-      <div v-if="emailValidation.message" class="form__field-error">
-        {{ emailValidation.message }}
+      <div v-if="formStore.fields.email.message" class="form__field-error">
+        {{ formStore.fields.email.message }}
       </div>
     </div>
+    <!-- Fim do campo de e-mail -->
 
     <!-- Tipo de cadastro -->
     <div class="form__group" v-if="showPersonType">
@@ -28,20 +31,16 @@
         </label>
       </div>
     </div>
+    <!-- Fim do tipo de cadastro -->
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { getEmailValidation } from "@helpers/utils.js";
+import { handleInput } from "@helpers/validation.js";
 import { formStore } from "@store/formStore.js";
 import { PERSON_TYPES } from "@components/constants.js";
 
 const props = defineProps({
   showPersonType: { type: Boolean, default: true },
-});
-
-const emailValidation = computed(() => {
-  return getEmailValidation(formStore.stepFirst.email);
 });
 </script>

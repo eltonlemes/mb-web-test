@@ -7,11 +7,12 @@
         <input
           id="nome"
           type="text"
-          v-model="formStore.stepSecond.nome"
-          :class="`form__field form__field--${nomeValidation.class}`"
+          v-model="formStore.fields.nome.value"
+          :class="`form__field form__field--${formStore.fields.nome.class}`"
+          @input="handleInput('nome')"
         />
-        <div v-if="nomeValidation.message" class="form__field-error">
-          {{ nomeValidation.message }}
+        <div v-if="formStore.fields.nome.message" class="form__field-error">
+          {{ formStore.fields.nome.message }}
         </div>
       </div>
       <div class="form__group">
@@ -19,11 +20,12 @@
         <input
           id="cpf"
           type="text"
-          v-model="formStore.stepSecond.cpf"
-          :class="`form__field form__field--${cpfValidation.class}`"
+          v-model="formStore.fields.cpf.value"
+          :class="`form__field form__field--${formStore.fields.cpf.class}`"
+          @input="handleInput('cpf')"
         />
-        <div v-if="cpfValidation.message" class="form__field-error">
-          {{ cpfValidation.message }}
+        <div v-if="formStore.fields.cpf.message" class="form__field-error">
+          {{ formStore.fields.cpf.message }}
         </div>
       </div>
       <div class="form__group">
@@ -31,11 +33,12 @@
         <input
           id="dataNascimento"
           type="date"
-          v-model="formStore.stepSecond.dataNascimento"
-          :class="`form__field form__field--${dataNascimentoValidation.class}`"
+          v-model="formStore.fields.dataNascimento.value"
+          :class="`form__field form__field--${formStore.fields.dataNascimento.class}`"
+          @input="handleInput('dataNascimento')"
         />
-        <div v-if="dataNascimentoValidation.message" class="form__field-error">
-          {{ dataNascimentoValidation.message }}
+        <div v-if="formStore.fields.dataNascimento.message" class="form__field-error">
+          {{ formStore.fields.dataNascimento.message }}
         </div>
       </div>
       <div class="form__group">
@@ -43,11 +46,12 @@
         <input
           id="telefone"
           type="text"
-          v-model="formStore.stepSecond.telefone"
-          :class="`form__field form__field--${telefoneValidation.class}`"
+          v-model="formStore.fields.telefone.value"
+          :class="`form__field form__field--${formStore.fields.telefone.class}`"
+          @input="handleInput('telefone')"
         />
-        <div v-if="telefoneValidation.message" class="form__field-error">
-          {{ telefoneValidation.message }}
+        <div v-if="formStore.fields.telefone.message" class="form__field-error">
+          {{ formStore.fields.telefone.message }}
         </div>
       </div>
     </template>
@@ -59,11 +63,12 @@
         <input
           id="razaoSocial"
           type="text"
-          v-model="formStore.stepSecond.razaoSocial"
-          :class="`form__field form__field--${razaoSocialValidation.class}`"
+          v-model="formStore.fields.razaoSocial.value"
+          :class="`form__field form__field--${formStore.fields.razaoSocial.class}`"
+          @input="handleInput('razaoSocial')"
         />
-        <div v-if="razaoSocialValidation.message" class="form__field-error">
-          {{ razaoSocialValidation.message }}
+        <div v-if="formStore.fields.razaoSocial.message" class="form__field-error">
+          {{ formStore.fields.razaoSocial.message }}
         </div>
       </div>
       <div class="form__group">
@@ -71,11 +76,12 @@
         <input
           id="cnpj"
           type="text"
-          v-model="formStore.stepSecond.cnpj"
-          :class="`form__field form__field--${cnpjValidation.class}`"
+          v-model="formStore.fields.cnpj.value"
+          :class="`form__field form__field--${formStore.fields.cnpj.class}`"
+          @input="handleInput('cnpj')"
         />
-        <div v-if="cnpjValidation.message" class="form__field-error">
-          {{ cnpjValidation.message }}
+        <div v-if="formStore.fields.cnpj.message" class="form__field-error">
+          {{ formStore.fields.cnpj.message }}
         </div>
       </div>
       <div class="form__group">
@@ -83,11 +89,12 @@
         <input
           id="dataAbertura"
           type="date"
-          v-model="formStore.stepSecond.dataAbertura"
-          :class="`form__field form__field--${dataAberturaValidation.class}`"
+          v-model="formStore.fields.dataAbertura.value"
+          :class="`form__field form__field--${formStore.fields.dataAbertura.class}`"
+          @input="handleInput('dataAbertura')"
         />
-        <div v-if="dataAberturaValidation.message" class="form__field-error">
-          {{ dataAberturaValidation.message }}
+        <div v-if="formStore.fields.dataAbertura.message" class="form__field-error">
+          {{ formStore.fields.dataAbertura.message }}
         </div>
       </div>
       <div class="form__group">
@@ -95,11 +102,12 @@
         <input
           id="telefonePJ"
           type="text"
-          v-model="formStore.stepSecond.telefonePJ"
-          :class="`form__field form__field--${telefonePJValidation.class}`"
+          v-model="formStore.fields.telefonePJ.value"
+          :class="`form__field form__field--${formStore.fields.telefonePJ.class}`"
+          @input="handleInput('telefonePJ')"
         />
-        <div v-if="telefonePJValidation.message" class="form__field-error">
-          {{ telefonePJValidation.message }}
+        <div v-if="formStore.fields.telefonePJ.message" class="form__field-error">
+          {{ formStore.fields.telefonePJ.message }}
         </div>
       </div>
     </template>
@@ -108,30 +116,6 @@
 
 <script setup>
 import { formStore } from "@store/formStore.js";
-import { computed } from "vue";
-import {
-  getNomeValidation,
-  getCPFValidation,
-  getCNPJValidation,
-  getTelefoneValidation,
-  getDataNascimentoValidation,
-  getDataAberturaValidation,
-} from "@helpers/utils.js";
+import { handleInput } from "@helpers/validation.js";
 import { PERSON_TYPES } from "@components/constants.js";
-
-// Validações para Pessoa Física
-const nomeValidation = computed(() => getNomeValidation(formStore.stepSecond.nome));
-const cpfValidation = computed(() => getCPFValidation(formStore.stepSecond.cpf));
-const dataNascimentoValidation = computed(() =>
-  getDataNascimentoValidation(formStore.stepSecond.dataNascimento)
-);
-const telefoneValidation = computed(() => getTelefoneValidation(formStore.stepSecond.telefone));
-
-// Validações para Pessoa Jurídica
-const razaoSocialValidation = computed(() => getNomeValidation(formStore.stepSecond.razaoSocial));
-const cnpjValidation = computed(() => getCNPJValidation(formStore.stepSecond.cnpj));
-const dataAberturaValidation = computed(() =>
-  getDataAberturaValidation(formStore.stepSecond.dataAbertura)
-);
-const telefonePJValidation = computed(() => getTelefoneValidation(formStore.stepSecond.telefonePJ));
 </script>

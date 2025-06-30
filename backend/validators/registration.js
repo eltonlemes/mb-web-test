@@ -242,10 +242,6 @@ const stepValidators = {
       );
     }
 
-    if (!data.confirmarSenha || data.senha !== data.confirmarSenha) {
-      errors.push("Confirmação de senha não confere");
-    }
-
     return errors;
   },
 };

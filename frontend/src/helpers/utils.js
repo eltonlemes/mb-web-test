@@ -43,11 +43,10 @@ export function isValidCPF(cpf) {
  */
 export function isValidSenha(senha) {
   const hasUpperCase = /[A-Z]/.test(senha);
-  const hasLowerCase = /[a-z]/.test(senha);
   const hasNumbers = /\d/.test(senha);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
 
-  if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+  if (!hasUpperCase || !hasNumbers || !hasSpecialChar) {
     return false;
   }
 

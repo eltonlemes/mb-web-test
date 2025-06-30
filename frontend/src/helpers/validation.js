@@ -265,7 +265,7 @@ const FIELD_CONFIG = {
         check: (v) => !isValidSenha(v),
         result: {
           class: FEEDBACK_TYPES.ERROR,
-          message: "Senha deve conter letra maiúscula, número ou caractere especial",
+          message: "Senha deve conter letra maiúscula, número e caractere especial",
           isValid: false,
         },
       },

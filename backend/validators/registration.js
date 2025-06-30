@@ -1,98 +1,163 @@
 /**
  * Validações para o sistema de cadastro
+ * Replicadas do frontend para garantir consistência
  */
 
-// Validações básicas de formato
+// Validações básicas de formato (idênticas ao frontend)
 const validators = {
-  isEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email);
   },
 
-  isCPF(cpf) {
-    if (!/^\d{11}$/.test(cpf)) return false;
+  isValidCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11) return false;
+    if (/^(\d)\1+$/.test(cpf)) return false;
 
-    // Validação do algoritmo do CPF
-    const digits = cpf.split("").map(Number);
-
-    // Verifica se todos os dígitos são iguais
-    if (digits.every((digit) => digit === digits[0])) return false;
-
-    // Calcula primeiro dígito verificador
-    let sum = 0;
+    let soma = 0;
     for (let i = 0; i < 9; i++) {
-      sum += digits[i] * (10 - i);
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
     }
-    let firstDigit = 11 - (sum % 11);
-    if (firstDigit >= 10) firstDigit = 0;
+    let resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(9))) return false;
 
-    if (digits[9] !== firstDigit) return false;
-
-    // Calcula segundo dígito verificador
-    sum = 0;
+    soma = 0;
     for (let i = 0; i < 10; i++) {
-      sum += digits[i] * (11 - i);
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
     }
-    let secondDigit = 11 - (sum % 11);
-    if (secondDigit >= 10) secondDigit = 0;
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(10))) return false;
 
-    return digits[10] === secondDigit;
+    return true;
   },
 
-  isCNPJ(cnpj) {
-    if (!/^\d{14}$/.test(cnpj)) return false;
+  isValidSenha(senha) {
+    const hasUpperCase = /[A-Z]/.test(senha);
+    const hasLowerCase = /[a-z]/.test(senha);
+    const hasNumbers = /\d/.test(senha);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
 
-    // Validação do algoritmo do CNPJ
-    const digits = cnpj.split("").map(Number);
-
-    // Verifica se todos os dígitos são iguais
-    if (digits.every((digit) => digit === digits[0])) return false;
-
-    // Calcula primeiro dígito verificador
-    const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let sum = 0;
-    for (let i = 0; i < 12; i++) {
-      sum += digits[i] * weights1[i];
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+      return false;
     }
-    let firstDigit = sum % 11;
-    firstDigit = firstDigit < 2 ? 0 : 11 - firstDigit;
 
-    if (digits[12] !== firstDigit) return false;
-
-    // Calcula segundo dígito verificador
-    const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    sum = 0;
-    for (let i = 0; i < 13; i++) {
-      sum += digits[i] * weights2[i];
-    }
-    let secondDigit = sum % 11;
-    secondDigit = secondDigit < 2 ? 0 : 11 - secondDigit;
-
-    return digits[13] === secondDigit;
+    return true;
   },
 
-  isDate(date) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  isValidCNPJ(cnpj) {
+    cnpj = cnpj.replace(/\D/g, "");
+    if (cnpj.length !== 14) return false;
+    // Elimina CNPJs com todos os dígitos iguais
+    if (/^(\d)\1+$/.test(cnpj)) return false;
 
-    const dateObj = new Date(date);
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitos.charAt(0))) return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitos.charAt(1))) return false;
+
+    return true;
+  },
+
+  isValidTelefone(telefone) {
+    telefone = telefone.replace(/\D/g, "");
+    if (!/^\d{10,11}$/.test(telefone)) return false;
+    // DDD válido (11 a 99)
+    const ddd = telefone.substring(0, 2);
+    if (parseInt(ddd) < 11 || parseInt(ddd) > 99) return false;
+    // Não pode ser sequência repetida
+    if (/^(\d)\1+$/.test(telefone)) return false;
+    // Se for celular (11 dígitos), o terceiro dígito deve ser 9
+    if (telefone.length === 11 && telefone[2] !== "9") return false;
+    return true;
+  },
+
+  calculateAge(dateStr) {
+    const birthDate = new Date(dateStr);
     const today = new Date();
 
-    // Verifica se é uma data válida e não está no futuro
-    return dateObj.getTime() && dateObj <= today;
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // Ajusta a idade se ainda não fez aniversário este ano
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
   },
 
-  isTelefone(tel) {
-    return /^\d{10,11}$/.test(tel);
+  isValidDataNascimento(dateStr) {
+    // Verifica formato
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      return false;
+    }
+
+    // Verifica se a data existe
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      return false;
+    }
+
+    // Verifica se não é futura
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date > today) {
+      return false;
+    }
+
+    // Calcula idade
+    const age = this.calculateAge(dateStr);
+
+    // Verifica idade mínima
+    if (age < 18) {
+      return false;
+    }
+
+    // Verifica idade máxima
+    if (age > 130) {
+      return false;
+    }
+
+    return true;
   },
 
-  isNome(nome) {
+  isValidDataAbertura(dateStr) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date <= today;
+  },
+
+  isValidNome(nome) {
     return nome && nome.trim().length >= 3;
   },
 
-  isSenha(senha) {
-    return senha && senha.length >= 6;
-  },
-
-  isTipoCadastro(tipo) {
+  isValidTipoCadastro(tipo) {
     return ["PF", "PJ"].includes(tipo);
   },
 };
@@ -102,11 +167,14 @@ const stepValidators = {
   validateStepFirst(data) {
     const errors = [];
 
-    if (!data.email || !validators.isEmail(data.email)) {
+    if (!data.email || !validators.isValidEmail(data.email)) {
       errors.push("E-mail inválido ou não informado");
     }
 
-    if (!data.tipoCadastro || !validators.isTipoCadastro(data.tipoCadastro)) {
+    if (
+      !data.tipoCadastro ||
+      !validators.isValidTipoCadastro(data.tipoCadastro)
+    ) {
       errors.push("Tipo de cadastro inválido");
     }
 
@@ -117,38 +185,46 @@ const stepValidators = {
     const errors = [];
 
     if (data.tipoCadastro === "PF") {
-      if (!validators.isNome(data.nome)) {
+      if (!validators.isValidNome(data.nome)) {
         errors.push("Nome é obrigatório e deve ter pelo menos 3 caracteres");
       }
 
-      if (!data.cpf || !validators.isCPF(data.cpf)) {
+      if (!data.cpf || !validators.isValidCPF(data.cpf)) {
         errors.push("CPF inválido ou não informado");
       }
 
-      if (!data.dataNascimento || !validators.isDate(data.dataNascimento)) {
-        errors.push("Data de nascimento inválida ou não informada");
+      if (
+        !data.dataNascimento ||
+        !validators.isValidDataNascimento(data.dataNascimento)
+      ) {
+        errors.push(
+          "Data de nascimento inválida (deve ter entre 18 e 130 anos)"
+        );
       }
 
-      if (!data.telefone || !validators.isTelefone(data.telefone)) {
-        errors.push("Telefone inválido ou não informado (10-11 dígitos)");
+      if (!data.telefone || !validators.isValidTelefone(data.telefone)) {
+        errors.push("Telefone inválido ou não informado");
       }
     } else if (data.tipoCadastro === "PJ") {
-      if (!validators.isNome(data.razaoSocial)) {
+      if (!validators.isValidNome(data.razaoSocial)) {
         errors.push(
           "Razão social é obrigatória e deve ter pelo menos 3 caracteres"
         );
       }
 
-      if (!data.cnpj || !validators.isCNPJ(data.cnpj)) {
+      if (!data.cnpj || !validators.isValidCNPJ(data.cnpj)) {
         errors.push("CNPJ inválido ou não informado");
       }
 
-      if (!data.dataAbertura || !validators.isDate(data.dataAbertura)) {
-        errors.push("Data de abertura inválida ou não informada");
+      if (
+        !data.dataAbertura ||
+        !validators.isValidDataAbertura(data.dataAbertura)
+      ) {
+        errors.push("Data de abertura inválida ou não pode ser futura");
       }
 
-      if (!data.telefonePJ || !validators.isTelefone(data.telefonePJ)) {
-        errors.push("Telefone inválido ou não informado (10-11 dígitos)");
+      if (!data.telefonePJ || !validators.isValidTelefone(data.telefonePJ)) {
+        errors.push("Telefone inválido ou não informado");
       }
     }
 
@@ -158,8 +234,12 @@ const stepValidators = {
   validateStepThird(data) {
     const errors = [];
 
-    if (!validators.isSenha(data.senha)) {
+    if (!data.senha || data.senha.length < 6) {
       errors.push("Senha deve ter pelo menos 6 caracteres");
+    } else if (!validators.isValidSenha(data.senha)) {
+      errors.push(
+        "Senha deve conter letra maiúscula, minúscula, número e caractere especial"
+      );
     }
 
     if (!data.confirmarSenha || data.senha !== data.confirmarSenha) {
